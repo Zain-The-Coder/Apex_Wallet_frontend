@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -14,37 +16,34 @@ function Login() {
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
   const [successCircleScale, setSuccessCircleScale] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorText('');
     setIsSubmitting(true);
 
-    // Simulate API request to backend (POST /api/auth/login)
-    setTimeout(() => {
-      if (email === 'error@apex.com' || password === 'error') {
-        setIsSubmitting(false);
-        setErrorText('Incorrect email or password. Please try again.');
-      } else {
-        // Success state simulation
-        setIsSubmitting(false);
-        setShowSuccessOverlay(true);
+    const res = await login(email, password);
+
+    if (res.success) {
+      setIsSubmitting(false);
+      setShowSuccessOverlay(true);
+      setTimeout(() => {
+        setSuccessCircleScale(true);
+        // Navigate directly to the accounts page without showing any alert popup!
         setTimeout(() => {
-          setSuccessCircleScale(true);
-          // Redirect to a dashboard or main page after a brief delay
-          setTimeout(() => {
-            alert(`Logged in successfully! Redirecting... (User: ${email})`);
-            navigate('/');
-          }, 1500);
-        }, 100);
-      }
-    }, 2000);
+          navigate('/accounts');
+        }, 1000);
+      }, 100);
+    } else {
+      setIsSubmitting(false);
+      setErrorText(res.message);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-md overflow-x-hidden bg-[#0b1326] text-[#dae2fd]">
       {/* Success Feedback Overlay */}
       <div 
-        className={`fixed inset-0 z-[100] flex items-center justify-center bg-background/90 backdrop-blur-xl transition-opacity duration-700 ${
+        className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#0b1326]/90 backdrop-blur-xl transition-opacity duration-700 ${
           showSuccessOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >

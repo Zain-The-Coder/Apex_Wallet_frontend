@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function Register() {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -69,37 +71,35 @@ function Register() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorText('');
     setIsSubmitting(true);
 
-    // Simulate API request to backend (POST /api/auth/register)
-    setTimeout(() => {
-      if (email.includes('taken') || email === 'taken@apex.com') {
-        setIsSubmitting(false);
-        setErrorText('This email address is already associated with an account.');
-      } else {
-        // Success state simulation
-        setIsSubmitting(false);
-        setShowSuccessOverlay(true);
+    const res = await register(name, email, password);
+    console.log(res)
+
+    if (res.success) {
+      setIsSubmitting(false);
+      setShowSuccessOverlay(true);
+      setTimeout(() => {
+        setSuccessCircleScale(true);
+        // Navigate directly to the accounts page without showing any alert popup!
         setTimeout(() => {
-          setSuccessCircleScale(true);
-          // Redirect to home/login after a brief delay
-          setTimeout(() => {
-            alert(`Account created successfully! Redirecting... (User: ${name})`);
-            navigate('/login');
-          }, 1500);
-        }, 100);
-      }
-    }, 2000);
+          navigate('/accounts');
+        }, 1000);
+      }, 100);
+    } else {
+      setIsSubmitting(false);
+      setErrorText(res.message);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-md overflow-x-hidden bg-[#0b1326] text-[#dae2fd]">
       {/* Success Feedback Overlay */}
       <div 
-        className={`fixed inset-0 z-[100] flex items-center justify-center bg-background/80 backdrop-blur-xl transition-opacity duration-700 ${
+        className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#0b1326]/80 backdrop-blur-xl transition-opacity duration-700 ${
           showSuccessOverlay ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
@@ -147,9 +147,9 @@ function Register() {
 
           {/* Register View */}
           <div className="auth-transition opacity-100 translate-x-0">
-            <div className="mb-xl">
-              <h2 className="font-headline-lg text-headline-lg text-on-surface mb-xs">Create Your Account</h2>
-              <p className="font-body-md text-body-md text-on-surface-variant">Join the future of global finance.</p>
+            <div className="mb-xl pb-[5px] text-center">
+              <h2 className="text-[24px] text-on-surface mb-xs">Create Your Account</h2>
+              <p className="font-body-md text-body-md font-bold text-on-surface-variant">Join the future of global finance.</p>
             </div>
 
             <form className="space-y-md" onSubmit={handleSubmit}>
