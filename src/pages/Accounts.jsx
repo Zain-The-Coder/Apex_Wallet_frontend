@@ -178,7 +178,7 @@ function Accounts() {
               <div className="col-span-full glass-card inner-stroke rounded-2xl p-lg sm:p-xl text-center flex flex-col items-center gap-md">
                 <span className="material-symbols-outlined text-outline text-5xl">account_balance_wallet</span>
                 <h3 className="font-headline-md text-xl sm:text-headline-md text-on-surface">No accounts found</h3>
-                <p className="font-body-md text-sm sm:text-base text-on-surface-variant max-w-sm">
+                <p className="font-body-md text-sm sm:text-base text-on-surface-variant">
                   You don't have any wallet accounts yet. Click the button above to create your first container.
                 </p>
               </div>

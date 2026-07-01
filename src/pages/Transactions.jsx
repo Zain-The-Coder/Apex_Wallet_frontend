@@ -529,7 +529,7 @@ function Transactions() {
       {/* New Transfer Modal */}
       {isTransferModalOpen && (
         <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="glass-card w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl p-5 sm:p-8 relative shadow-2xl border border-[#464555] animate-fadeIn">
+          <div className="glass-card sm:w-[75%] lg:w-[50%] max-h-[90vh] overflow-y-auto rounded-2xl p-5 sm:p-8 relative shadow-2xl border border-[#464555] animate-fadeIn">
             <button 
               className="absolute top-4 right-4 text-on-surface-variant hover:text-on-surface cursor-pointer"
               onClick={() => setIsTransferModalOpen(false)}
