@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ApexWallet | Secure Access</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#ffddb8",
+                        "tertiary-container": "#885500",
+                        "surface-container-high": "#222a3d",
+                        "on-tertiary": "#472a00",
+                        "inverse-surface": "#dae2fd",
+                        "background": "#0b1326",
+                        "inverse-primary": "#4d44e3",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface-tint": "#c3c0ff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "outline": "#918fa1",
+                        "error": "#ffb4ab",
+                        "surface-container-low": "#131b2e",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "secondary": "#4edea3",
+                        "surface-bright": "#31394d",
+                        "surface-container": "#171f33",
+                        "on-secondary-fixed": "#002113",
+                        "on-primary-container": "#dad7ff",
+                        "on-tertiary-container": "#ffd4a4",
+                        "surface": "#0b1326",
+                        "primary-fixed": "#e2dfff",
+                        "primary-container": "#4f46e5",
+                        "secondary-container": "#00a572",
+                        "on-surface": "#dae2fd",
+                        "surface-container-highest": "#2d3449",
+                        "surface-container-lowest": "#060e20",
+                        "outline-variant": "#464555",
+                        "surface-variant": "#2d3449",
+                        "on-secondary-container": "#00311f",
+                        "on-primary": "#1d00a5",
+                        "error-container": "#93000a",
+                        "surface-dim": "#0b1326",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-tertiary-fixed": "#2a1700",
+                        "primary": "#c3c0ff",
+                        "on-primary-fixed": "#0f0069",
+                        "on-secondary": "#003824",
+                        "on-surface-variant": "#c7c4d8",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#ffb95f",
+                        "inverse-on-surface": "#283044",
+                        "on-error": "#690005",
+                        "on-background": "#dae2fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "3xl": "64px",
+                        "2xl": "48px",
+                        "sm": "8px",
+                        "gutter": "20px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0b1326;
+            font-family: 'Inter', sans-serif;
+        }
+        .auth-card {
+            background: #171f33;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+        .glass-glow {
+            box-shadow: 0 0 40px 5px rgba(195, 192, 255, 0.08);
+        }
+        .input-focus-ring:focus {
+            box-shadow: 0 0 0 2px rgba(195, 192, 255, 0.4);
+        }
+        .auth-transition {
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .loading-dots:after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        @keyframes dots {
+            0%, 20% { color: rgba(0,0,0,0); text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            40% { color: white; text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0); }
+            60% { text-shadow: .25em 0 0 white, .5em 0 0 rgba(0,0,0,0); }
+            80%, 100% { text-shadow: .25em 0 0 white, .5em 0 0 white; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-md overflow-x-hidden">
+<!-- Success Feedback Overlay (Hidden by Default) -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/90 backdrop-blur-xl opacity-0 pointer-events-none transition-opacity duration-700" id="successOverlay">
+<div class="text-center">
+<div class="w-24 h-24 bg-secondary-container/20 rounded-full flex items-center justify-center mx-auto mb-lg scale-50 transition-transform duration-700 ease-out" id="successCircle">
+<span class="material-symbols-outlined text-secondary text-[64px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Verification Successful</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-sm">Redirecting to your secure dashboard...</p>
+</div>
+</div>
+<main class="relative z-10 w-full max-w-[480px]">
+<!-- Brand Identity -->
+<div class="flex flex-col items-center mb-xl">
+<div class="w-16 h-16 bg-primary-container rounded-2xl flex items-center justify-center mb-md shadow-lg glass-glow">
+<span class="material-symbols-outlined text-on-primary-container text-[40px]" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">ApexWallet</h1>
+<p class="font-label-sm text-label-sm text-outline tracking-widest uppercase mt-xs">Institutional Grade Security</p>
+</div>
+<!-- Auth Container -->
+<div class="auth-card rounded-3xl p-lg md:p-xl relative overflow-hidden glass-glow">
+<!-- Alert Component (Hidden) -->
+<div class="hidden mb-md p-md bg-error-container/20 border border-error/30 rounded-xl flex items-start gap-sm animate-in fade-in slide-in-from-top-4 duration-300" id="errorAlert">
+<span class="material-symbols-outlined text-error text-[20px]">error</span>
+<div class="flex-1">
+<p class="font-label-sm text-label-sm text-error" id="errorText">An unexpected error occurred. Please try again.</p>
+</div>
+<button class="text-error/60 hover:text-error transition-colors" onclick="hideError()">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+<!-- Login View -->
+<div class="auth-transition opacity-100 translate-x-0" id="loginView">
+<div class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Welcome Back</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Sign in to manage your digital assets.</p>
+</div>
+<form class="space-y-lg" onsubmit="handleAuth(event, 'login')">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-sm ml-xs">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">mail</span>
+<input class="w-full bg-surface-container-lowest border-outline-variant border rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary transition-all input-focus-ring" placeholder="name@company.com" required="" type="email"/>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-sm ml-xs">
+<label class="block font-label-md text-label-md text-on-surface-variant">Password</label>
+<a class="font-label-sm text-label-sm text-primary hover:text-primary-fixed transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
+<input class="w-full bg-surface-container-lowest border-outline-variant border rounded-xl py-3.5 pl-12 pr-12 text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary transition-all input-focus-ring" id="loginPass" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" onclick="togglePass('loginPass')" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-sm px-xs">
+<input class="w-4 h-4 rounded border-outline-variant bg-surface-container text-primary focus:ring-primary focus:ring-offset-surface-container" id="remember" type="checkbox"/>
+<label class="font-label-sm text-label-sm text-on-surface-variant cursor-pointer select-none" for="remember">Remember me for 30 days</label>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md py-4 rounded-xl flex items-center justify-center gap-sm hover:bg-primary-fixed-dim active:scale-[0.98] transition-all relative overflow-hidden group" type="submit">
+<span class="btn-text">Sign In</span>
+<div class="hidden btn-loader items-center gap-2">
+<span>Processing</span>
+<span class="loading-dots"></span>
+</div>
+</button>
+</form>
+<div class="mt-xl text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    New to ApexWallet? 
+                    <button class="text-primary font-semibold hover:underline ml-1" onclick="switchView('register')">Create an account</button>
+</p>
+</div>
+</div>
+<!-- Registration View -->
+<div class="auth-transition hidden opacity-0 translate-x-8" id="registerView">
+<div class="mb-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Create Your Account</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Join the future of global finance.</p>
+</div>
+<form class="space-y-md" onsubmit="handleAuth(event, 'register')">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-sm ml-xs">Full Name</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">person</span>
+<input class="w-full bg-surface-container-lowest border-outline-variant border rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary transition-all input-focus-ring" placeholder="John Doe" required="" type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-sm ml-xs">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">mail</span>
+<input class="w-full bg-surface-container-lowest border-outline-variant border rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary transition-all input-focus-ring" id="regEmail" oninput="validateEmail(this)" placeholder="name@company.com" required="" type="email"/>
+</div>
+<div class="mt-2 hidden" id="emailFeedback">
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Email address looks good
+                        </span>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-sm ml-xs">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-[20px]">lock</span>
+<input class="w-full bg-surface-container-lowest border-outline-variant border rounded-xl py-3.5 pl-12 pr-12 text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary transition-all input-focus-ring" id="regPass" oninput="checkStrength(this.value)" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-primary transition-colors" onclick="togglePass('regPass')" type="button">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+<!-- Strength Meter -->
+<div class="mt-3 px-xs">
+<div class="flex justify-between mb-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Security Strength</span>
+<span class="font-label-sm text-label-sm text-outline" id="strengthText">Weak</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden flex gap-0.5">
+<div class="h-full w-1/4 bg-outline-variant transition-colors" id="bar1"></div>
+<div class="h-full w-1/4 bg-outline-variant transition-colors" id="bar2"></div>
+<div class="h-full w-1/4 bg-outline-variant transition-colors" id="bar3"></div>
+<div class="h-full w-1/4 bg-outline-variant transition-colors" id="bar4"></div>
+</div>
+</div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant px-xs leading-relaxed">
+                    By creating an account, you agree to our <a class="text-primary hover:underline" href="#">Terms</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a>.
+                </p>
+<button class="w-full mt-2 bg-primary text-on-primary font-label-md py-4 rounded-xl flex items-center justify-center gap-sm hover:bg-primary-fixed-dim active:scale-[0.98] transition-all relative overflow-hidden" type="submit">
+<span class="btn-text">Create Account</span>
+<div class="hidden btn-loader items-center gap-2">
+<span>Initializing Wallet</span>
+<span class="loading-dots"></span>
+</div>
+</button>
+</form>
+<div class="mt-xl text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Already have an account? 
+                    <button class="text-primary font-semibold hover:underline ml-1" onclick="switchView('login')">Sign In</button>
+</p>
+</div>
+</div>
+</div>
+<!-- Trust Badges -->
+<div class="mt-xl grid grid-cols-2 gap-md opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+<div class="flex items-center justify-center gap-2 border border-outline-variant/30 rounded-lg p-2">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<span class="font-label-sm text-[10px] tracking-wider uppercase">AES-256 Encrypted</span>
+</div>
+<div class="flex items-center justify-center gap-2 border border-outline-variant/30 rounded-lg p-2">
+<span class="material-symbols-outlined text-[16px]">security</span>
+<span class="font-label-sm text-[10px] tracking-wider uppercase">FCA Regulated</span>
+</div>
+</div>
+</main>
+<script>
+    /**
+     * Password Visibility Toggle
+     */
+    function togglePass(id) {
+        const input = document.getElementById(id);
+        const btn = input.nextElementSibling.querySelector('span');
+        if (input.type === 'password') {
+            input.type = 'text';
+            btn.innerText = 'visibility_off';
+        } else {
+            input.type = 'password';
+            btn.innerText = 'visibility';
+        }
+    }
+
+    /**
+     * View Switching Logic
+     */
+    function switchView(view) {
+        const login = document.getElementById('loginView');
+        const register = document.getElementById('registerView');
+        hideError();
+
+        if (view === 'register') {
+            login.classList.add('opacity-0', '-translate-x-8');
+            setTimeout(() => {
+                login.classList.add('hidden');
+                register.classList.remove('hidden');
+                setTimeout(() => {
+                    register.classList.remove('opacity-0', 'translate-x-8');
+                    register.classList.add('opacity-100', 'translate-x-0');
+                }, 50);
+            }, 400);
+        } else {
+            register.classList.add('opacity-0', 'translate-x-8');
+            setTimeout(() => {
+                register.classList.add('hidden');
+                login.classList.remove('hidden');
+                setTimeout(() => {
+                    login.classList.remove('opacity-0', '-translate-x-8');
+                    login.classList.add('opacity-100', 'translate-x-0');
+                }, 50);
+            }, 400);
+        }
+    }
+
+    /**
+     * Email Format Validation
+     */
+    function validateEmail(input) {
+        const feedback = document.getElementById('emailFeedback');
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (re.test(input.value)) {
+            feedback.classList.remove('hidden');
+            input.classList.remove('border-error');
+            input.classList.add('border-secondary');
+        } else {
+            feedback.classList.add('hidden');
+            input.classList.remove('border-secondary');
+            if (input.value.length > 0) {
+                input.classList.add('border-error');
+            } else {
+                input.classList.remove('border-error');
+            }
+        }
+    }
+
+    /**
+     * Password Strength Meter Logic
+     */
+    function checkStrength(val) {
+        const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4')];
+        const text = document.getElementById('strengthText');
+        
+        // Reset styles
+        bars.forEach(b => b.className = 'h-full w-1/4 bg-outline-variant transition-colors');
+        
+        let score = 0;
+        if (val.length >= 6) score++;
+        if (val.length >= 10) score++;
+        if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        const colors = ['bg-error', 'bg-tertiary', 'bg-primary-container', 'bg-secondary'];
+        const labels = ['Weak', 'Medium', 'Strong', 'Secure'];
+
+        if (val.length === 0) {
+            text.innerText = 'Weak';
+            text.className = 'font-label-sm text-label-sm text-outline';
+            return;
+        }
+
+        for (let i = 0; i < score; i++) {
+            bars[i].className = `h-full w-1/4 ${colors[score-1]} transition-colors`;
+        }
+        
+        text.innerText = labels[score-1] || 'Weak';
+        
+        // Visual feedback for text color
+        const colorClassMap = ['text-error', 'text-tertiary', 'text-primary', 'text-secondary'];
+        text.className = `font-label-sm text-label-sm ${colorClassMap[score-1] || 'text-outline'}`;
+    }
+
+    /**
+     * Error Banner Management
+     */
+    function hideError() {
+        document.getElementById('errorAlert').classList.add('hidden');
+    }
+
+    /**
+     * Form Submission Handler
+     */
+    function handleAuth(e, type) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        const text = btn.querySelector('.btn-text');
+        const loader = btn.querySelector('.btn-loader');
+        const alert = document.getElementById('errorAlert');
+        const errorMsg = document.getElementById('errorText');
+
+        // Toggle Loading State
+        btn.disabled = true;
+        text.classList.add('hidden');
+        loader.classList.remove('hidden');
+        loader.classList.add('flex');
+
+        // Simulate Network Delay
+        setTimeout(() => {
+            // Demonstration: "error@apex.com" always fails
+            const emailInput = e.target.querySelector('input[type="email"]');
+            
+            if (emailInput && emailInput.value === 'error@apex.com') {
+                // Fail state simulation
+                btn.disabled = false;
+                text.classList.remove('hidden');
+                loader.classList.add('hidden');
+                loader.classList.remove('flex');
+                
+                errorMsg.innerText = type === 'login' 
+                    ? 'Incorrect email or password. Please try again.' 
+                    : 'This email is already registered.';
+                alert.classList.remove('hidden');
+            } else {
+                // Success state simulation
+                showSuccess();
+            }
+        }, 2000);
+    }
+
+    /**
+     * Final Success Transition
+     */
+    function showSuccess() {
+        const overlay = document.getElementById('successOverlay');
+        const circle = document.getElementById('successCircle');
+        
+        overlay.classList.remove('pointer-events-none');
+        overlay.classList.add('opacity-100');
+        
+        setTimeout(() => {
+            circle.classList.remove('scale-50');
+            circle.classList.add('scale-100');
+            
+            // In a real app, window.location would change here
+            console.log("Redirecting...");
+        }, 100);
+    }
+</script>
+</body></html>
+
+
+    
