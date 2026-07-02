@@ -121,7 +121,7 @@ function Home() {
                 </span>
                 New: v2.4 Immutable Ledger Live
               </div>
-              <h1 className="font-display text-display text-on-surface leading-tight">
+              <h1 className="text-[30px] sm:font-display sm:text-display text-on-surface leading-tight">
                 The Ultra-Secure Ledger Wallet for <span className="text-secondary">Seamless Transactions.</span>
               </h1>
               <p>
