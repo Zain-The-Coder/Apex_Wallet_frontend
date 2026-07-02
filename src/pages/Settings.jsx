@@ -19,7 +19,20 @@ function Settings() {
   const [securitySuccess, setSecuritySuccess] = useState('');
 
   // Theme states
-  const [themeMode, setThemeMode] = useState('dark');
+const [themeMode, setThemeMode] = useState('dark'); // ya light
+
+useEffect(() => {
+  const root = window.document.documentElement;
+  if (themeMode === 'dark') {
+    root.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+  }
+}, [themeMode]);
+
+const handleThemeChange = (mode) => {
+  setThemeMode(mode);
+};  
 
   // Developer settings state
   const [apiUrl, setApiUrl] = useState(
@@ -41,14 +54,6 @@ function Settings() {
     setThemeMode(isDark ? 'dark' : 'light');
   }, []);
 
-  const handleThemeChange = (mode) => {
-    setThemeMode(mode);
-    if (mode === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
 
   const handleSaveProfile = (e) => {
     e.preventDefault();
